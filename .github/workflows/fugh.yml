@@ -24,15 +24,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
+      - name: installing packages
+        run: bash ./fugh/system/scripts/pkgmgr.sh
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: running user-made scripts
         run: |
-          bash ./fugh/system/scripts/pkgmgr.sh
           chmod +x ./fugh/scripts/*.sh
           echo running FUGH scripts
           ./fugh/scripts/main.sh
+      - name: start a script
+        run: node (jq .main package.json)
